@@ -5,6 +5,7 @@ from database import engine, SessionLocal
 from models import base, QueryData
 from schema import QueryRequest, QueryResponce
 import llm
+import perplexity
 
 
 base.metadata.create_all(bind=engine)
@@ -25,8 +26,18 @@ def index():
 
 @app.post("/get-responce", response_model=List[QueryResponce])
 def generate_responce(user_query: QueryRequest, db:Session = Depends(get_db)):
-    query_response = llm.get_responce(user_query.prompt)
+    if(user_query.realtime):
+
+        data = perplexity.fetch_perplexity_summary(user_query.prompt)
+        print("data ==> ")
+        query_response = llm.get_responce(user_query.prompt, data)
+        print("response ==>")
+    else:
+
+        query_response = llm.get_responce(user_query.prompt, None)
+
     response_text = query_response.choices[0].message.content 
+    
     new_query = QueryData(prompt = user_query.prompt,responce = response_text)
     db.add(new_query)
     db.commit()
