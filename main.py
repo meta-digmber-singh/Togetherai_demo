@@ -27,11 +27,8 @@ def index():
 @app.post("/get-responce", response_model=List[QueryResponce])
 def generate_responce(user_query: QueryRequest, db:Session = Depends(get_db)):
     if(user_query.realtime):
-
         data = perplexity.fetch_perplexity_summary(user_query.prompt)
-        print("data ==> ")
         query_response = llm.get_responce(user_query.prompt, data)
-        print("response ==>")
     else:
 
         query_response = llm.get_responce(user_query.prompt, None)
