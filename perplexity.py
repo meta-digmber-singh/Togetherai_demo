@@ -5,7 +5,7 @@ load_dotenv()
 
 client = Together()
 
-def fetch_perplexity_summary(query: str):
+def fetch_realtime_data_perplexity(query: str):
 
     prompt = f"User question : {query}, please provide real time data regarding user question."
 

@@ -4,7 +4,6 @@ from typing import Optional
 
 class QueryRequest(BaseModel):
     prompt: str
-    realtime: Optional[bool] = False
 
 
 class QueryResponce(QueryRequest):
